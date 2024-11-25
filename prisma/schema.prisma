@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Store {
+  id          String      @id @default(cuid())
+  name        String
+  address     String
+  phone       String
+  branches    Branch[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Branch {
+  id          String      @id @default(cuid())
+  name        String
+  address     String
+  phone       String
+  store       Store       @relation(fields: [storeId], references: [id])
+  storeId     String
+  inventory   Inventory[]
+  sales       Sale[]
+  // users       User[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model User {
+  id          String      @id @default(cuid())
+  name        String
+  email       String      @unique
+  password    String
+  role        String        @default("")
+  // branch      Branch      @relation(fields: [branchId], references: [id])
+  branchId    String
+  sales       Sale[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  description String?
+  price       Float
+  inventory   Inventory[]
+  saleItems   SaleItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Inventory {
+  id          String      @id @default(cuid())
+  quantity    Int
+  product     Product     @relation(fields: [productId], references: [id])
+  productId   String
+  branch      Branch      @relation(fields: [branchId], references: [id])
+  branchId    String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Sale {
+  id          String      @id @default(cuid())
+  total       Float
+  items       SaleItem[]
+  user        User        @relation(fields: [userId], references: [id])
+  userId      String
+  branch      Branch      @relation(fields: [branchId], references: [id])
+  branchId    String
+  createdAt   DateTime    @default(now())
+}
+
+model SaleItem {
+  id          String      @id @default(cuid())
+  quantity    Int
+  price       Float
+  product     Product     @relation(fields: [productId], references: [id])
+  productId   String
+  sale        Sale        @relation(fields: [saleId], references: [id])
+  saleId      String
+}
+
+// enum Role {
+//   ADMIN
+//   MANAGER
+//   CASHIER
+// }

@@ -1,0 +1,21 @@
+{
+    "welcome": "Bienvenido",
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "password": "Contraseña",
+    "email": "Correo electrónico",
+    "dashboard": "Dashboard",
+    "stores": "Tiendas",
+    "products": "Productos",
+    "sales": "Ventas",
+    "users": "Usuarios",
+    "storeName": "Nombre de la tienda",
+    "addStore": "Agregar tienda",
+    "detail": " Ver Detalles",
+    "phone": "Teléfono",
+    "addProduct": "Agregar producto",
+    "name": "Nombre",
+    "description": "Descripción",
+    "price": "Precio",
+    "actions": "Acciones"
+  }

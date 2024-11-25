@@ -1,0 +1,21 @@
+{
+    "welcome": "Welcome",
+    "login": "Log in",
+    "logout": "Log out",
+    "password": "Password",
+    "email": "Email",
+    "dashboard": "Dashboard",
+    "stores": "Stores",
+    "products": "Products",
+    "sales": "Sales",
+    "users": "Users",
+    "storeName": "Store Name",
+    "addStore": "Add Store",
+    "detail": "View Details",
+    "phone": "Phone",
+    "addProduct": "Add Product",
+    "name": "Name",
+    "description": "Description",
+    "price": "Price",
+    "actions": "Actions"
+  }
