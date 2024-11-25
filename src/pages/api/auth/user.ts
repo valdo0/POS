@@ -4,6 +4,8 @@ import { prisma } from '../../../../lib/prisma';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   switch (req.method) {
+    case 'GET':
+      return await getUsers(req, res);
     case 'POST':
       return await createUser(req, res);
     case 'PUT':
@@ -12,6 +14,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return await deleteUser(req, res);
     default:
       return res.status(405).json({ error: 'Método no permitido' });
+  }
+}
+
+// Listar usuarios
+async function getUsers(req: NextApiRequest, res: NextApiResponse) {
+  try {
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        password: true,
+        role: true,
+        branchId: true
+      }
+    });
+    return res.status(200).json({ users });
+  } catch (error) {
+    return res.status(500).json({ error: 'Error al obtener los usuarios' });
   }
 }
 
