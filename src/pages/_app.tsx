@@ -1,4 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-require-imports */
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
@@ -6,7 +7,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import {useRouter} from 'next/router';
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const getLayout = Component.getLayout || ((page) => page);
+  const getLayout = (Component as any).getLayout || ((page: React.ReactElement) => page);
   const messages = require(`../../public/locales/${router.locale}/common.json`);
   return (
     <NextIntlClientProvider
