@@ -8,21 +8,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Plus } from "lucide-react";
-import { useState } from "react";
-import CreateStore from "@/components/create-store";
 import AuthLayout from "@/components/authLayouth";
 
 export default function StoresPage() {
-  const [open, setOpen] = useState(false);
 
   return (
     <>
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Stores</h1>
-        <Button onClick={() => setOpen(true)}>
-          <Plus className="mr-2 h-4 w-4" /> Add Store
-        </Button>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-6">
@@ -43,7 +36,6 @@ export default function StoresPage() {
         </Card>
       </div>
 
-      <CreateStore open={open} onClose={() => setOpen(false)} />
     </>
   );
 }
