@@ -9,13 +9,39 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CreateStore from "@/components/create-store";
 import AuthLayout from "@/components/authLayouth";
 import { useTranslations} from "next-intl";
+
+interface Store {
+  id: string;
+  name: string;
+  address: string;
+  phone: string;
+}
+
 export default function StoresPage() {
   const [open, setOpen] = useState(false);
-  const  t  = useTranslations();
+  const [stores, setStores] = useState<Store[]>([]);
+  const [refresh, setRefresh] = useState(0);
+  const t = useTranslations();
+
+  useEffect(() => {
+    const fetchStores = async () => {
+      try {
+        const response = await fetch('/api/stores');
+        const data = await response.json();
+        if (data.stores) {
+          setStores(data.stores);
+        }
+      } catch (error) {
+        console.error('Error al cargar las tiendas:', error);
+      }
+    };
+
+    fetchStores();
+  }, [refresh]);
 
   return (
     <>
@@ -27,24 +53,32 @@ export default function StoresPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mt-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Store Name</CardTitle>
-            <CardDescription>Address: 123 Main St</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="text-sm text-muted-foreground">{t("phone")}</p>
-                <p className="font-medium">+1 234 567 890</p>
+        {stores.map((store) => (
+          <Card key={store.id}>
+            <CardHeader>
+              <CardTitle>{store.name}</CardTitle>
+              <CardDescription>Address: {store.address}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-sm text-muted-foreground">{t("phone")}</p>
+                  <p className="font-medium">{store.phone}</p>
+                </div>
+                <Button variant="outline">{t("detail")}</Button>
               </div>
-              <Button variant="outline">{t("detail")}</Button>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
-      <CreateStore open={open} onClose={() => setOpen(false)} />
+      <CreateStore         
+      open={open} 
+        onClose={() => setOpen(false)} 
+        onSuccess={() => {
+          setRefresh(prev => prev + 1);
+          setOpen(false);
+        }} />
     </>
   );
 }

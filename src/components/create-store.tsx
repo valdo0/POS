@@ -24,16 +24,17 @@ import * as z from "zod";
 
 const formSchema = z.object({
   name: z.string().min(1, "Store name is required"),
-  address: z.string().min(1, "Address is required"),
+  address: z.string().min(1, "Address is required"), 
   phone: z.string().min(1, "Phone number is required"),
 });
 
 interface CreateStoreProps {
   open: boolean;
   onClose: () => void;
+  onSuccess: () => void;
 }
 
-export default function CreateStore({ open, onClose }: CreateStoreProps) {
+export default function CreateStore({ open, onClose, onSuccess }: CreateStoreProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,11 +46,28 @@ export default function CreateStore({ open, onClose }: CreateStoreProps) {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      // TODO: Implement store creation
-      console.log(values);
-      onClose();
+      const response = await fetch("/api/stores", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: values.name,
+          address: values.address,
+          phone: values.phone,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Tienda creada:", data);
+        onClose();
+        onSuccess();
+      } else {
+        console.error("Error al crear la tienda");
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Error en el envío:", error);
     }
   };
 

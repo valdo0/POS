@@ -11,6 +11,7 @@ import { useTranslations } from "next-intl";
 export default function ProductsPage() {
   const [open, setOpen] = useState(false);
   const t = useTranslations();
+  const [refresh, setRefresh] = useState(0);
 
   return (
     <>
@@ -22,10 +23,19 @@ export default function ProductsPage() {
       </div>
 
       <div className="mt-6">
-        <ProductList />
+        {/* Pasar refresh como prop */}
+        <ProductList key={refresh} />
       </div>
 
-      <CreateProduct open={open} onClose={() => setOpen(false)} />
+      {/* Añadir onSuccess para actualizar refresh */}
+      <CreateProduct 
+        open={open} 
+        onClose={() => setOpen(false)} 
+        onSuccess={() => {
+          setRefresh(prev => prev + 1);
+          setOpen(false);
+        }}
+      />
     </>
   );
 }

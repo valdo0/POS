@@ -32,9 +32,10 @@ const formSchema = z.object({
 interface CreateProductProps {
   open: boolean;
   onClose: () => void;
+  onSuccess: () => void;
 }
 
-export default function CreateProduct({ open, onClose }: CreateProductProps) {
+export default function CreateProduct({ open, onClose, onSuccess }: CreateProductProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -62,6 +63,7 @@ export default function CreateProduct({ open, onClose }: CreateProductProps) {
         const data = await response.json();
         console.log("Product created:", data);
         onClose(); // Cierra el diálogo después de crear el producto
+        onSuccess(); // Llama a la función onSuccess para actualizar el estado
       } else {
         console.error("Error creating product");
       }
