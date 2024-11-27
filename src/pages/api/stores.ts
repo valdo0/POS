@@ -4,11 +4,11 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // Verificar autenticación
-  //const session = await getServerSession(req, res, authOptions);
-  //if (!session) {
-   // return res.status(401).json({ error: 'No autorizado' });
- // }
+
+  const session = await getServerSession(req, res, authOptions);
+  if (!session) {
+   return res.status(401).json({ error: 'No autorizado' });
+ }
 
   switch (req.method) {
     case 'GET':
