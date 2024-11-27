@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // pages/api/auth/[...nextauth].ts
 
 import NextAuth from "next-auth";
@@ -35,7 +36,7 @@ export const authOptions = {
   },
   csrf: false,
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }:any) {
       if (user) {
         token.id = user.id;
         token.email = user.email;
@@ -44,7 +45,7 @@ export const authOptions = {
       console.log('JWT Token:', token); // Agregar log para ver el token
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }:any) {
       session.user.id = token.id;
       session.user.email = token.email;
       session.user.name = token.name;

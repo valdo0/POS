@@ -40,7 +40,7 @@ export default function CreateProduct({ open, onClose }: CreateProductProps) {
     defaultValues: {
       name: "",
       description: "",
-      price: "",
+      price: 0,
     },
   });
 
